@@ -1,5 +1,6 @@
 # MyPy Lib
 Soll eine Ansammlung an Modulen werden, mit deren Hilfe einfache Aufgaben schneller gelöst werden können. Es enthält bis jetzt die folgenden Module:
+
 1. **File**:
 - zum ein- und auslesen von einfachen Textdateien
 - zum ein- und auslesen von *JSON* Dateien
