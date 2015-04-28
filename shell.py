@@ -2,6 +2,7 @@
 #				Module with code especially for shell scripts						#
 #######################################################################################
 
+############################# Decorator #############################
 class help_option(object):
 	'''
 		Basis Decorator for Shell Scripts with built-in "--help" for given Dictionary Elements.
@@ -50,12 +51,12 @@ class help_option(object):
 			elif len(params) > 0:
 				if params[0] not in self.help and params[0] not in keys and not params[0].startswith('-'):
 					del params[0]	
-		
+					
 			if len(params) > 0 and params[0] in self.help:
 				self._printed_help = True
 				print "Options:"
 				for (key, value) in self.arguments.items():
-					print " ", key + ",\t\t", value[0], "  [required]" if len(value) == 2 else "[default: " + value[2] + "]"
+					print " ", key + ",\t\t", value[0], "  [required]" if len(value) == 2 else "[default: " + str(value[2]) + "]"
 				if self.additional_text != str():
 					print "\n" + self.additional_text
 				
@@ -84,3 +85,45 @@ class help_option(object):
 					return
 					
 		return func_wrapper
+		
+############################# Functions #############################
+def multiple_functions(funcs, argv):
+	'''
+		Function for a script with more than one function
+		*argv should take the complete sys.argv array
+		*funcs takes an dictionary of the following form:
+		{
+			"func_opt_name": ("Function Description", function_itself),
+			...,
+			"info": "Info text beneath the options"
+		}
+	'''
+	# Dictionary with all the functions
+	functions = dict(**funcs)
+	# Array of possible *help* arguments
+	help = ["--help", "--h"]
+	#Gewaehlte Option:
+	opt = argv[1]
+	# Info text
+	additional_text_key = "info"
+	additional_text = str()
+	
+	# Looks for the info text
+	if additional_text_key in functions.keys():
+		additional_text = functions[additional_text_key]
+		del functions[additional_text_key]
+	
+	
+	if opt in help:
+		for (key, value) in functions.items():
+			print " ", key + ",\t\t", value[0]
+		if additional_text != str():
+			print "\n" + additional_text
+	else:
+		if opt in functions.keys():
+			functions[opt][1](argv[2:])
+		else:
+			print "'" + opt +"' is no accepted option, use '--help' to see all possible options"
+	
+	
+	
