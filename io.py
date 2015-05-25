@@ -46,3 +46,15 @@ def write_json(data, filepath):
 	'''
 	with open(filepath, "w") as f:
 		json.dump(data, f)
+		
+#######################################################################################
+#							Directory Operations										#
+#######################################################################################
+
+############################# Create Operations #############################
+def create_dir(dir):
+	'''
+		Create a new directory if it does not exist
+	'''
+	if not os.path.exists(dir):
+		os.makedirs(dir)
